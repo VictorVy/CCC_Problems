@@ -3,7 +3,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class _2008_ItsColdHere
 {
@@ -11,26 +11,20 @@ public class _2008_ItsColdHere
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean done = false;
+        TreeMap<Integer, String> cities = new TreeMap<>();
 
-        HashMap<Integer, String> cities = new HashMap<>();
-
-        int coldest = 200;
-
-        while(!done)
+        while(true)
         {
             String line = br.readLine();
 
             String name = line.substring(0, line.indexOf(' '));
             int temp = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
 
-            coldest = Math.min(coldest, temp);
-
             cities.put(temp, name);
 
-            if(name.equals("Waterloo")) done = true;
+            if(name.equals("Waterloo")) break;
         }
 
-        System.out.println(cities.get(coldest));
+        System.out.println(cities.firstEntry().getValue());
     }
 }
