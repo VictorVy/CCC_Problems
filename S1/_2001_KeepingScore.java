@@ -1,3 +1,5 @@
+//solved
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,6 +61,10 @@ public class _2001_KeepingScore
             System.out.print(card + " ");
             count++;
         }
+
+        if(count == 0) points += 3;
+        else if(count == 1) points += 2;
+        else if(count == 2) points++;
 
         total += points;
         System.out.println("        " + points + "\n                Total " + total);
