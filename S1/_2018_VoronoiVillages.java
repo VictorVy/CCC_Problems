@@ -1,5 +1,3 @@
-//solved
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,22 +9,20 @@ public class _2018_VoronoiVillages
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int num = Integer.parseInt(br.readLine());
-        double minSize = 1000000000;
-        int[] villages = new int[num];
+        int n = Integer.parseInt(br.readLine());
 
-        for(int i = 0; i < num; i++)
+        int[] villages = new int[n];
+
+        for(int i = 0; i < n; i++)
             villages[i] = Integer.parseInt(br.readLine());
 
         Arrays.sort(villages);
 
-        for(int i = 1; i < num - 1; i++)
-        {
-            double size = (double) (villages[i] - villages[i - 1]) / 2 + (double) (villages[i + 1] - villages[i]) / 2;
+        double min = 1000000000;
 
-            minSize = Math.min(minSize, size);
-        }
+        for(int i = 1; i < n - 1; i++)
+            min = Math.min(min, (villages[i] - villages[i - 1]) / 2.0 + (villages[i + 1] - villages[i]) / 2.0);
 
-        System.out.printf("%.1f%n", minSize);
+        System.out.printf("%.1f", min);
     }
 }
