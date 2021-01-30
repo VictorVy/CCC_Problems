@@ -1,51 +1,52 @@
-//solved
-
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class _2020_EscapeRoom
 {
-    static BufferedReader br;
-
-    static int sizeY, sizeX;
-
+    static int r, c;
     static ArrayList<ArrayList<int[]>> cells;
-
     static boolean[][] covered;
 
     public static void main(String[] args) throws IOException
     {
-        br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        sizeY = Integer.parseInt(br.readLine());
-        sizeX = Integer.parseInt(br.readLine());
+        r = Integer.parseInt(br.readLine());
+        c = Integer.parseInt(br.readLine());
 
         cells = new ArrayList<>(1000001);
-        covered = new boolean[sizeY][sizeX];
+        covered = new boolean[r][c];
 
-        for(int i = 0; i < 1000001; i++) //no generic arrays allowed :^(
+        for(int i = 0; i < 1000001; i++)
             cells.add(new ArrayList<>());
 
-        for(int r = 0; r < sizeY; r++) //parsing input
+        for(int y = 1; y <= r; y++)
         {
-            String[] line = br.readLine().split(" ");
+            st = new StringTokenizer(br.readLine());
 
-            for(int c = 0; c < sizeX; c++)
-                cells.get(Integer.parseInt(line[c])).add(new int[] {r + 1, c + 1});
+            for(int x = 1; x <= c; x++)
+                cells.get(Integer.parseInt(st.nextToken())).add(new int[]{y, x});
         }
 
-        System.out.println(findPath(sizeY, sizeX) ? "yes" : "no");
+        System.out.println(escapable(r, c) ? "yes" : "no");
     }
 
-    static boolean findPath(int r, int c)
+    static boolean escapable(int y, int x)
     {
-        for(int[] cell : cells.get(r * c))
-        {
-            if(cell[0] == 1 && cell[1] == 1) return true;
-            if(covered[cell[0] - 1][cell[1] - 1]) return false;
+        if(y == 1 && x == 1) return true;
+        covered[y - 1][x - 1] = true;
 
-            covered[cell[0] - 1][cell[1] - 1] = true;
-            if(findPath(cell[0], cell[1])) return true;
+        for(int[] next : cells.get(y * x))
+        {
+            if(!covered[next[0] - 1][next[1] - 1])
+            {
+                covered[next[0] - 1][next[1] - 1] = true;
+                if(escapable(next[0], next[1])) return true;
+            }
         }
 
         return false;
