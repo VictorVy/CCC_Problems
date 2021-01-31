@@ -1,34 +1,31 @@
-//solved
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class _2017_HighTideLowTide
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        int n = Integer.parseInt(sc.nextLine());
+        int n = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
 
-        int[] measures = new int[n];
+        int[] data = new int[n];
 
         for(int i = 0; i < n; i++)
-            measures[i] = sc.nextInt();
+            data[i] = Integer.parseInt(st.nextToken());
 
-        Arrays.sort(measures);
+        Arrays.sort(data);
 
-        int mid = n % 2 == 0 ? n / 2 : n / 2 + 1;
+        int centre = n % 2 == 0 ? n / 2 - 1 : n / 2;
 
-        for(int i = 0; i < mid; i++)
-        {
-            if(i == mid - 1 && n % 2 != 0)
-            {
-                System.out.print(measures[0]);
-                break;
-            }
+        for(int i = 0; i < n / 2; i++)
+            System.out.print(data[centre - i] + " " + data[centre + i + 1] + " ");
 
-            System.out.print(measures[(mid - 1) - i] + " " + measures[mid + i] + " ");
-        }
+        if(n % 2 != 0) System.out.print(data[0]);
     }
 }
