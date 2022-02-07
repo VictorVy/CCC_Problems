@@ -1,47 +1,58 @@
+//solved
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class _2021_LunchConcert
 {
+    static int[] positions, times, ranges;
+    static int n;
+
     public static void main(String[] args) throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
 
-        TreeMap<Integer, int[]> friends = new TreeMap<>();
+        positions = new int[n];
+        times = new int[n];
+        ranges = new int[n];
+
+        int bot = 1000000000, top = 0;
 
         for(int i = 0; i < n; i++)
         {
             String[] input = br.readLine().split(" ");
-            friends.put(Integer.parseInt(input[0]), new int[] {Integer.parseInt(input[1]), Integer.parseInt(input[2])});
+
+            positions[i] = Integer.parseInt(input[0]);
+            times[i] = Integer.parseInt(input[1]);
+            ranges[i] = Integer.parseInt(input[2]);
+
+            bot = Math.min(bot, positions[i]);
+            top = Math.max(top, positions[i]);
         }
 
+        System.out.println(binSearch(bot, top));
+    }
+
+    private static long binSearch(int bot, int top)
+    {
+        int mid = (bot + top) / 2;
+        long midT = calcTime(mid), botT = calcTime(mid - 1), topT = calcTime(mid + 1);
+
+        if(botT >= midT && midT <= topT) return midT;
+        if(botT < midT) return binSearch(bot, mid - 1);
+        return binSearch(mid + 1, top);
+    }
+
+    private static long calcTime(int pos)
+    {
         long time = 0;
-        TreeMap<Integer, Long> timeSumL = new TreeMap<>(), timeSumR = new TreeMap<>();
-        timeSumL.put(friends.firstKey() - 1, 0L);
 
-        for(Map.Entry<Integer, int[]> entry : friends.entrySet())
-        {
-            time += (long) entry.getValue()[0] * Math.max(0, Math.abs(entry.getKey() - friends.firstKey()) - entry.getValue()[1]);
+        for(int i = 0; i < n; i++)
+            time += (long) times[i] * Math.max(0, Math.abs(positions[i] - pos) - ranges[i]);
 
-            timeSumL.put(entry.getKey() + entry.getValue()[1], timeSumL.get(timeSumL.lowerKey(entry.getKey())) + entry.getValue()[0]);
-//            timeSum.put(entry.getKey() + entry.getValue()[1], timeSum.get(friends.lowerKey(entry.getKey())) + entry.getValue()[0]);
-        }
-
-//        long minTime = time;
-//
-//        for(int i = friends.firstKey() + 1; i <= friends.lastKey(); i++)
-//        {
-//            time += timeSum.get(friends.lowerKey(i));
-//            time -= timeSum.get(friends.lastKey()) - timeSum.get(friends.lowerKey(i));
-//            System.out.println(time);
-//            minTime = Math.min(minTime, time);
-//        }
-//
-//        System.out.println(minTime);
+        return time;
     }
 }
