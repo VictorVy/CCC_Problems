@@ -12,20 +12,26 @@ public class _2002_FractionAction
 
         int n = Integer.parseInt(br.readLine()), d = Integer.parseInt(br.readLine());
 
-        int num = n / d;
-        int rem = n % d;
-
-        int gcf = 1;
-
-        for(int i = Math.min(rem, d); i > 0; i--)
+        if(n % d == 0)
         {
-            if(rem % i == 0 && d % i == 0)
+            System.out.println(n / d);
+            return;
+        }
+
+        int m = Math.min(n, d);
+        for(int i = m / 2; i > 1; i--)
+        {
+            if(n % i == 0 && d % i == 0)
             {
-                gcf = i;
+                n /= i;
+                d /= i;
                 break;
             }
         }
 
-        System.out.println((num == 0 && rem != 0 ? "" : num + " ") + (rem == 0 ? "" : rem / gcf + "/" + d / gcf));
+        int q = n / d;
+        n -= q * d;
+
+        System.out.println((q == 0 ? "" : q + " ") + n + "/" + d);
     }
 }
