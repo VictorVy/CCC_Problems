@@ -46,13 +46,11 @@ public class _2020_EscapeRoom
     private static boolean search(int y, int x)
     {
         if(y == r - 1 && x == c - 1) return true;
+        if(visited[y][x]) return false;
         visited[y][x] = true;
 
         for(int[] coords : factors.get(room[y][x]))
-        {
-            if(visited[coords[0] - 1][coords[1] - 1]) continue;
             if(search(coords[0] - 1, coords[1] - 1)) return true;
-        }
 
         return false;
     }
