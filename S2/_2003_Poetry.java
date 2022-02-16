@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class _2003_Poetry
+public class _2203_Poetry
 {
     public static void main(String[] args) throws IOException
     {
@@ -14,48 +14,24 @@ public class _2003_Poetry
 
         for(int i = 0; i < n; i++)
         {
-            String s1 = br.readLine().toLowerCase();
-            String s2 = br.readLine().toLowerCase();
-            String s3 = br.readLine().toLowerCase();
-            String s4 = br.readLine().toLowerCase();
+            String s1 = getSyllable(br.readLine().toLowerCase()), s2 = getSyllable(br.readLine().toLowerCase()), s3 = getSyllable(br.readLine().toLowerCase()), s4 = getSyllable(br.readLine().toLowerCase());
 
-            s1 = s1.contains(" ") ? s1.substring(s1.lastIndexOf(' ')) : s1;
-            s2 = s2.contains(" ") ? s2.substring(s2.lastIndexOf(' ')) : s2;
-            s3 = s3.contains(" ") ? s3.substring(s3.lastIndexOf(' ')) : s3;
-            s4 = s4.contains(" ") ? s4.substring(s4.lastIndexOf(' ')) : s4;
-
-            s1 = containsVowel(s1) ? s1.substring(s1.lastIndexOf(lastVowel(s1))) : s1;
-            s2 = containsVowel(s2) ? s2.substring(s2.lastIndexOf(lastVowel(s2))) : s2;
-            s3 = containsVowel(s3) ? s3.substring(s3.lastIndexOf(lastVowel(s3))) : s3;
-            s4 = containsVowel(s4) ? s4.substring(s4.lastIndexOf(lastVowel(s4))) : s4;
-
-            String form;
-
-            if(s1.equals(s2) && s2.equals(s3) && s3.equals(s4)) form = "perfect";
-            else if(s1.equals(s2) && s3.equals(s4)) form = "even";
-            else if(s1.equals(s3) && s2.equals(s4)) form = "cross";
-            else if(s1.equals(s4) && s2.equals(s3)) form = "shell";
-            else form = "free";
-
-            System.out.println(form);
+            if(s1.equals(s2) && s2.equals(s3) && s3.equals(s4)) System.out.println("perfect");
+            else if(s1.equals(s2) && s3.equals(s4)) System.out.println("even");
+            else if(s1.equals(s3) && s2.equals(s4)) System.out.println("cross");
+            else if(s1.equals(s4) && s2.equals(s3)) System.out.println("shell");
+            else System.out.println("free");
         }
     }
 
-    static boolean containsVowel(String s) { return s.contains("a") || s.contains("e") || s.contains("i") || s.contains("o") || s.contains("u"); }
-
-    static char lastVowel(String s)
+    private static String getSyllable(String s)
     {
-        for(int i = s.length() - 1; i >= 0; i--)
-        {
-            char ch = s.charAt(i);
+        s = s.substring(s.lastIndexOf(' ') + 1);
 
-            if(ch == 'a') return 'a';
-            if(ch == 'e') return 'e';
-            if(ch == 'i') return 'i';
-            if(ch == 'o') return 'o';
-            if(ch == 'u') return 'u';
-        }
+        int ai = s.lastIndexOf('a'), ei = s.lastIndexOf('e'), ii = s.lastIndexOf('i'), oi = s.lastIndexOf('o'), ui = s.lastIndexOf('u');
 
-        return 'z';
+        int lastIndex = Math.max(ai, Math.max(ei, Math.max(ii, Math.max(oi, ui))));
+
+        return (lastIndex == -1 ? s : s.substring(lastIndex));
     }
 }
